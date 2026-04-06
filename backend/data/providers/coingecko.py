@@ -25,6 +25,14 @@ class CoinGeckoProvider(DataProvider):
         self.base_url = "https://api.coingecko.com/api/v3"
         self._last_request_time = 0
         self._request_count = 0
+
+    async def get_macro_data(self, indicator: str, country: str) -> pd.DataFrame:
+        """CoinGecko integration does not supply macro series here."""
+        return pd.DataFrame()
+
+    async def get_fund_flow(self, market: str) -> pd.DataFrame:
+        """Traditional market fund flow is not provided by CoinGecko."""
+        return pd.DataFrame()
     
     async def _rate_limit(self):
         """限流控制"""
@@ -213,7 +221,7 @@ class CoinGeckoProvider(DataProvider):
         else:
             return "极度恐惧"
     
-    async def get_fund_flow(self, symbol: str = "BTC") -> Dict[str, Any]:
+    async def get_crypto_fund_flow(self, symbol: str = "BTC") -> Dict[str, Any]:
         """获取加密资金流向（通过交易所数据估算）"""
         await self._rate_limit()
         

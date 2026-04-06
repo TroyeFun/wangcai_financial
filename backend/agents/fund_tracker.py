@@ -10,7 +10,7 @@ from loguru import logger
 import pandas as pd
 
 from .base_agent import BaseAgent
-from ..data.service import DataService
+from data.service import DataService
 
 
 class FundTrackerAgent(BaseAgent):

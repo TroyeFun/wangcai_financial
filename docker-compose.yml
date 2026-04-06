@@ -1,6 +1,6 @@
 services:
   # ========== 数据库服务 ==========
-  
+
   db:
     image: ${DOCKER_POSTGRES_IMAGE:-postgres:15-alpine}
     container_name: investment-db
@@ -32,7 +32,7 @@ services:
       retries: 5
 
   # ========== 后端服务 ==========
-  
+
   backend:
     build:
       context: ./backend
@@ -55,12 +55,13 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
-      - chroma_data:/app/data
+      # Persist Chroma only; do not mount over /app/data (hides Python package)
+      - chroma_data:/app/data/chroma
     command: uvicorn api.main:app --host 0.0.0.0 --port 8000 --reload
     restart: unless-stopped
 
   # ========== 前端服务 ==========
-  
+
   frontend:
     build:
       context: ./frontend
@@ -81,12 +82,18 @@ services:
     command: npm run dev
     restart: unless-stopped
 
-  # ========== 飞书 Bot 服务 ==========
-  
+  # ========== 飞书 Bot（可选；默认不构建，避免走 Docker Hub）==========
+  # 需要时: docker compose --env-file .env.compose --profile feishu up -d --build
+
   feishu-bot:
+    profiles:
+      - feishu
     build:
-      context: ./feishu-bot
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: feishu-bot/Dockerfile
+      args:
+        BASE_IMAGE: ${PYTHON_BASE_IMAGE:-python:3.10-slim}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-}
     container_name: investment-feishu-bot
     env_file:
       - ./backend/.env

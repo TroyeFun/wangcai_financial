@@ -1,23 +1,33 @@
-FROM python:3.10-slim
+# Build from repository root: context=. dockerfile=feishu-bot/Dockerfile
+ARG BASE_IMAGE=python:3.10-slim
+FROM ${BASE_IMAGE}
 
 WORKDIR /app
 
-# 安装系统依赖
+ARG PIP_INDEX_URL=
+
 RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制依赖文件
-COPY ../backend/requirements.txt .
+# Reuse backend lockfile for shared agents/data stack
+COPY backend/requirements.txt /app/requirements.txt
+RUN if [ -n "$PIP_INDEX_URL" ]; then \
+      pip install --no-cache-dir -i "$PIP_INDEX_URL" -r /app/requirements.txt; \
+    else \
+      pip install --no-cache-dir -r /app/requirements.txt; \
+    fi
 
-# 安装 Python 依赖
-RUN pip install --no-cache-dir -r requirements.txt
+# Bot entry imports backend packages (agents, config, data)
+COPY backend /app/backend
+COPY feishu-bot /app/feishu-bot
 
-# 复制应用代码
-COPY . .
+# run.py imports feishu_bot.bot (underscore package name)
+RUN ln -sf /app/feishu-bot /app/feishu_bot
 
-# 暴露端口
+WORKDIR /app/feishu-bot
+ENV PYTHONPATH=/app:/app/backend
+
 EXPOSE 8001
 
-# 启动命令
 CMD ["python", "run.py"]

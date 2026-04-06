@@ -9,7 +9,7 @@ import pandas as pd
 from loguru import logger
 
 from .providers.akshare import AkShareProvider
-from .providers.finnhub import FinnHubProvider
+from .providers.finnhub import FinnhubProvider
 from .providers.coingecko import CoinGeckoProvider
 from .cache import CacheManager
 

@@ -7,7 +7,8 @@ pydantic-settings==2.1.0
 # 数据处理
 pandas==2.1.4
 numpy==1.26.3
-akshare==1.12.50
+# 1.12.x removed from major mirrors; keep a 3.10-compatible lower bound
+akshare>=1.16.72,<2
 
 # 数据库
 psycopg2-binary==2.9.9
@@ -27,8 +28,8 @@ python-dotenv==1.0.0
 loguru==0.7.2
 aiohttp==3.9.1
 
-# 飞书 SDK
-lark-oapi==2.0.0
+# 飞书 SDK（2.0.0 在镜像/PyPI 上不可用；1.5.x 为当前稳定线）
+lark-oapi>=1.5.3,<2
 
 # 测试
 pytest==7.4.4
