@@ -140,11 +140,24 @@ curl -X POST "http://localhost:8000/api/analyze" \
 ## 🛣️ MVP 路线图
 
 ### Phase 1: 数据基座（Week 1-4）
-- [x] 项目脚手架
-- [ ] AkShare Provider 完整实现
-- [ ] Finnhub + CoinGecko Provider
-- [ ] 宏观 Analyst Agent
-- [ ] 前端 MVP
+- [x] **Week 1**: 项目脚手架
+  - 项目结构搭建（FastAPI + React + 飞书 Bot）
+  - AI Agent 框架（ROLES Prompt 反幻觉）
+  - AkShare Provider（基础版）
+  - 意图识别路由
+- [x] **Week 2**: 数据源扩展
+  - Finnhub Provider（美股数据）
+  - CoinGecko Provider（加密货币）
+  - 数据调度器（定时采集）
+  - 统一数据服务层
+- [ ] **Week 3**: Agent 完善
+  - 估值 Analyst
+  - 资金流 Tracker
+  - 情绪 Analyst
+- [ ] **Week 4**: 前端 MVP
+  - 图表可视化
+  - 历史记录
+  - 四维评分雷达图
 
 ### Phase 2: Agent 矩阵（Week 5-8）
 - [ ] 6 个 Agent 完整上线
