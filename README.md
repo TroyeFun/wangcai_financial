@@ -150,10 +150,12 @@ curl -X POST "http://localhost:8000/api/analyze" \
   - CoinGecko Provider（加密货币）
   - 数据调度器（定时采集）
   - 统一数据服务层
-- [ ] **Week 3**: Agent 完善
-  - 估值 Analyst
-  - 资金流 Tracker
-  - 情绪 Analyst
+- [x] **Week 3**: Agent 完善
+  - 估值 Analyst（PE/PB/PS 分位计算）
+  - 资金流 Tracker（北向/两融追踪）
+  - 情绪 Analyst（恐贪指数、VIX）
+  - 风控 Manager（仓位建议、VaR、回撤）
+  - API 集成所有 Agent
 - [ ] **Week 4**: 前端 MVP
   - 图表可视化
   - 历史记录
