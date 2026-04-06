@@ -1,0 +1,35 @@
+# 核心依赖
+fastapi==0.109.0
+uvicorn[standard]==0.27.0
+pydantic==2.5.3
+pydantic-settings==2.1.0
+
+# 数据处理
+pandas==2.1.4
+numpy==1.26.3
+akshare==1.12.50
+
+# 数据库
+psycopg2-binary==2.9.9
+sqlalchemy==2.0.25
+redis==5.0.1
+chromadb==0.4.22
+
+# LLM
+litellm==1.28.0
+httpx==0.26.0
+
+# 任务调度
+apscheduler==3.10.4
+
+# 工具库
+python-dotenv==1.0.0
+loguru==0.7.2
+aiohttp==3.9.1
+
+# 飞书 SDK
+lark-oapi==2.0.0
+
+# 测试
+pytest==7.4.4
+pytest-asyncio==0.23.3
