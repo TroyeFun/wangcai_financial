@@ -99,6 +99,96 @@ investment-analysis/
 - **GPT-4o**：美股、全球市场分析
 - **DeepSeek R1**：复杂推理（多因子分析、套利策略）
 
+## 🔧 LLM 配置详解
+
+### AIHubMix（推荐国内用户）
+
+**官网**：https://aihubmix.com
+
+AIHubMix 是国内的 AI API 聚合平台，提供统一接口调用多种大模型，适合国内用户使用。
+
+**优势**：
+- 🌏 国内直连，无需魔法
+- 💰 价格低（DeepSeek V3 约 ¥1/百万 tokens）
+- 🤖 支持多种模型（DeepSeek、GPT、Qwen、Yi 等）
+- 📊 统一计费
+
+**配置步骤**：
+
+1. **注册账号**：访问 https://aihubmix.com 注册
+
+2. **获取 API Key**：在控制台获取 API Key
+
+3. **配置环境变量**：
+   ```bash
+   # backend/.env
+   AIHUBMIX_API_KEY=your_api_key_here
+   
+   # 可选，自定义端点（不填用官方默认）
+   # AIHUBMIX_BASE_URL=https://api.aihubmix.com/v1
+   ```
+
+4. **支持的模型**（填入配置文件即可）：
+   | 模型别名 | 说明 | 价格（¥/M tokens） |
+   |---------|------|-------------------|
+   | `deepseek-chat` | DeepSeek V3，性价比最高 | 输入 1 / 输出 2 |
+   | `deepseek-reasoner` | DeepSeek R1，复杂推理 | 输入 4 / 输出 16 |
+   | `gpt-4o` | GPT-4o，英文分析强 | 输入 15 / 输出 60 |
+   | `gpt-4o-mini` | GPT-4o Mini，便宜快速 | 输入 1.5 / 输出 6 |
+   | `qwen-plus` | 通义千问 Plus | 输入 2 / 输出 6 |
+   | `yi-large` | 零一万物 | 输入 3 / 输出 9 |
+
+5. **验证配置**：
+   ```bash
+   curl -X POST http://localhost:8000/api/analyze \
+     -H "Content-Type: application/json" \
+     -d '{"query": "你好"}'
+   ```
+
+### 其他 LLM 配置方案
+
+#### DeepSeek 官方
+
+```bash
+# backend/.env
+DEEPSEEK_API_KEY=your_deepseek_api_key
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+```
+
+#### OpenAI
+
+```bash
+# backend/.env
+OPENAI_API_KEY=sk-xxxx
+```
+
+#### Azure OpenAI
+
+```bash
+# backend/.env
+AZURE_API_KEY=your_azure_key
+AZURE_BASE_URL=https://your-resource.openai.azure.com
+AZURE_API_VERSION=2024-02-01
+```
+
+### 模型路由说明
+
+配置文件中指定了默认使用的模型：
+
+```bash
+# 默认模型（用于中国市场分析）
+DEFAULT_MODEL=deepseek-chat
+CHINA_MODEL=deepseek-chat
+
+# 美股/国际市场模型
+US_MODEL=gpt-4o
+
+# 复杂推理模型（用于套利策略等）
+REASONING_MODEL=deepseek-reasoner
+```
+
+---
+
 ## 📊 API 使用示例
 
 ### 宏观分析
