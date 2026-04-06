@@ -213,19 +213,37 @@ curl -X POST "http://localhost:8000/api/analyze" \
 
 1. 在飞书开放平台创建应用
 2. 启用机器人权限
-3. 配置 Webhook 地址
+3. 配置事件订阅（Webhook 地址）
 4. 填写 `.env` 中的飞书配置项
+
+### 飞书 Bot 部署
+
+```bash
+cd feishu-bot
+cp ../backend/.env.example .env
+# 配置 FEISHU_APP_ID 和 FEISHU_APP_SECRET
+
+# 启动 Bot
+python run.py
+
+# 测试命令
+python run.py --test        # 测试 Agent
+python run.py --morning-report  # 生成早报
+python run.py --alerts      # 检查预警
+```
 
 ### 可用命令
 
 | 命令 | 功能 |
 |------|------|
-| `/宏观` | 宏观经济概览 |
-| `/估值` | 市场/行业估值 |
-| `/资金` | 资金流向 |
-| `/情绪` | 市场情绪 |
-| `/分析` | 综合四维分析 |
-| `/预警` | 查看/设置预警 |
+| `/宏观 [国家]` | 宏观经济概览 |
+| `/估值 [标的]` | 市场/行业估值 |
+| `/资金 [类型]` | 资金流向 |
+| `/情绪 [市场]` | 市场情绪 |
+| `/分析 [标的]` | 综合四维分析 |
+| `/预警 列表` | 查看预警设置 |
+| `/早报` | 立即获取早报 |
+| `/晚报` | 立即获取晚报 |
 
 ## 🛣️ MVP 路线图
 
@@ -254,9 +272,15 @@ curl -X POST "http://localhost:8000/api/analyze" \
   - 快捷示例
 
 ### Phase 2: Agent 矩阵（Week 5-8）
-- [ ] 6 个 Agent 完整上线
-- [ ] 四维评分系统
-- [ ] 飞书 Bot + 早晚报推送
+- [x] **Week 5-6**: 飞书 Bot + 异常预警
+  - 飞书 Bot 完整版（命令系统）
+  - 定时推送（早报 07:30、晚报 20:00）
+  - 异常预警检查（每小时）
+  - 多 Agent 协同分析
+- [ ] **Week 7-8**: 飞书 Bot + 早晚报推送
+  - 群组绑定配置
+  - 预警推送到指定群
+  - 前端集成实时推送
 
 ### Phase 3: 智能化（Week 9-12）
 - [ ] 多 Agent 协同对话
