@@ -156,10 +156,12 @@ curl -X POST "http://localhost:8000/api/analyze" \
   - 情绪 Analyst（恐贪指数、VIX）
   - 风控 Manager（仓位建议、VaR、回撤）
   - API 集成所有 Agent
-- [ ] **Week 4**: 前端 MVP
-  - 图表可视化
-  - 历史记录
-  - 四维评分雷达图
+- [x] **Week 4**: 前端 MVP ✅
+  - 四维评分可视化（渐变卡片）
+  - 进度条评分展示
+  - 风控建议面板
+  - 深色主题 UI
+  - 快捷示例
 
 ### Phase 2: Agent 矩阵（Week 5-8）
 - [ ] 6 个 Agent 完整上线
