@@ -1,23 +1,26 @@
-FROM python:3.10-slim
+ARG BASE_IMAGE=python:3.10-slim
+FROM ${BASE_IMAGE}
 
 WORKDIR /app
 
-# 安装系统依赖
+ARG PIP_INDEX_URL=
+
+# System deps for building some Python wheels
 RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制依赖文件
 COPY requirements.txt .
 
-# 安装 Python 依赖
-RUN pip install --no-cache-dir -r requirements.txt
+# Optional PyPI mirror (e.g. China): set build-arg PIP_INDEX_URL
+RUN if [ -n "$PIP_INDEX_URL" ]; then \
+      pip install --no-cache-dir -i "$PIP_INDEX_URL" -r requirements.txt; \
+    else \
+      pip install --no-cache-dir -r requirements.txt; \
+    fi
 
-# 复制应用代码
 COPY . .
 
-# 暴露端口
 EXPOSE 8000
 
-# 启动命令
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]

@@ -34,7 +34,14 @@ cp backend/.env.example backend/.env
 ### 3. 启动服务
 
 ```bash
-docker-compose up -d
+docker compose up -d
+```
+
+若在国内网络下 **Docker Hub 超时** 或 **镜像加速仍失败**，请使用仓库内 **`.env.compose`** 指定直连镜像仓库（见 [docs/DOCKER_CN.md](docs/DOCKER_CN.md)）：
+
+```bash
+cp .env.compose.example .env.compose
+docker compose --env-file .env.compose up -d --build
 ```
 
 服务启动后：

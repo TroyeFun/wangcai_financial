@@ -1,0 +1,47 @@
+# Only PostgreSQL + Redis (small images). Use when full stack build still fails.
+#
+#   docker compose --env-file .env.compose -f docker-compose.db-only.yml up -d
+#
+# Then on host (see docs/DOCKER_CN.md):
+#   conda activate troye_stock  # or your venv
+#   cd backend && pip install -r requirements.txt && uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
+#   cd frontend && npm install && npm run dev
+#
+# Point backend/.env to localhost:
+#   DATABASE_URL=postgresql://postgres:postgres@127.0.0.1:5432/investment_db
+#   REDIS_URL=redis://127.0.0.1:6379/0
+
+services:
+  db:
+    image: ${DOCKER_POSTGRES_IMAGE:-postgres:15-alpine}
+    container_name: investment-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: investment_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: ${DOCKER_REDIS_IMAGE:-redis:7-alpine}
+    container_name: investment-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
+  redis_data:

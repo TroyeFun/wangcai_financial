@@ -1,18 +1,18 @@
-FROM node:18-alpine
+ARG BASE_IMAGE=node:18-alpine
+FROM ${BASE_IMAGE}
 
 WORKDIR /app
 
-# 复制 package.json
+ARG NPM_REGISTRY=
+
 COPY package*.json ./
 
-# 安装依赖
-RUN npm install
+# Optional npm registry (e.g. npmmirror in China)
+RUN if [ -n "$NPM_REGISTRY" ]; then npm config set registry "$NPM_REGISTRY"; fi \
+    && npm install
 
-# 复制应用代码
 COPY . .
 
-# 暴露端口
 EXPOSE 3000
 
-# 启动命令（开发模式）
 CMD ["npm", "run", "dev"]

@@ -1,10 +1,8 @@
-version: '3.8'
-
 services:
   # ========== 数据库服务 ==========
   
   db:
-    image: postgres:15-alpine
+    image: ${DOCKER_POSTGRES_IMAGE:-postgres:15-alpine}
     container_name: investment-db
     environment:
       POSTGRES_USER: postgres
@@ -21,7 +19,7 @@ services:
       retries: 5
 
   redis:
-    image: redis:7-alpine
+    image: ${DOCKER_REDIS_IMAGE:-redis:7-alpine}
     container_name: investment-redis
     ports:
       - "6379:6379"
@@ -39,6 +37,9 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${PYTHON_BASE_IMAGE:-python:3.10-slim}
+        PIP_INDEX_URL: ${PIP_INDEX_URL:-}
     container_name: investment-backend
     env_file:
       - ./backend/.env
@@ -64,6 +65,9 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        BASE_IMAGE: ${NODE_BASE_IMAGE:-node:18-alpine}
+        NPM_REGISTRY: ${NPM_REGISTRY:-}
     container_name: investment-frontend
     ports:
       - "3000:3000"
